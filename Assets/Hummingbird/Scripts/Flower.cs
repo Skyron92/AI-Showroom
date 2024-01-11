@@ -32,7 +32,9 @@ namespace Hummingbird {
         public bool HasNectar => NectarAmount > 0f;
 
         private void Awake() {
-            nectarCollider = GetComponent<Collider>();
+            _flowerMaterial = GetComponent<MeshRenderer>().material;
+            _flowerCollider = GetComponent<Collider>();
+            nectarCollider = transform.Find("Pistil").GetComponent<Collider>();
         }
 
         /// <summary>
@@ -53,6 +55,18 @@ namespace Hummingbird {
             }
 
             return nectarTaken;
+        }
+
+        /// <summary>
+        /// Resets the flower
+        /// </summary>
+        public void ResetFlower() {
+            NectarAmount = 1f;
+            
+            _flowerCollider.gameObject.SetActive(true);
+            nectarCollider.gameObject.SetActive(true);
+            
+            _flowerMaterial.SetColor("_BaseColor", fullFlowerColor);
         }
     }
 }
