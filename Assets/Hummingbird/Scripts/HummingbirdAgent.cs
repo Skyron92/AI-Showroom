@@ -1,19 +1,12 @@
+using Unity.MLAgents;
 using UnityEngine;
 
-namespace Hummingbird
-{
-    public class HummingbirdAgent : MonoBehaviour
-    {
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
+namespace Hummingbird {
+    /// <summary>
+    /// A hummingbird Machine Learning Agent
+    /// </summary>
+    public class HummingbirdAgent : Agent {
+        
+        
     }
 }

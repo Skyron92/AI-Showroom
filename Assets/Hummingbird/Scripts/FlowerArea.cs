@@ -47,7 +47,7 @@ namespace Hummingbird {
         }
 
         /// <summary>
-        /// Gets the <see cref="Flower"/>> that a nectar collider belong to
+        /// Gets the <see cref="Flower"/> that a nectar collider belong to
         /// </summary>
         /// <param name="collider">The nectar collider</param>
         /// <returns>The matching flower</returns>
