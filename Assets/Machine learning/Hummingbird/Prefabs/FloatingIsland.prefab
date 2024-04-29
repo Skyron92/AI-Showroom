@@ -2155,6 +2155,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8703149456917459529}
+  - component: {fileID: 3698463221322843100}
   m_Layer: 0
   m_Name: FloatingIsland
   m_TagString: Untagged
@@ -2186,6 +2187,18 @@ Transform:
   - {fileID: 5227812465203542851}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3698463221322843100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4420374660899403437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b76669a42ba54d96878664adc6f5ed6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4431170821944840957
 GameObject:
   m_ObjectHideFlags: 0
@@ -4593,7 +4606,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6114471346523511741}
-  - component: {fileID: 1174634555204332632}
   m_Layer: 0
   m_Name: Flowers
   m_TagString: Untagged
@@ -4648,18 +4660,6 @@ Transform:
   - {fileID: 7086556660939810673}
   m_Father: {fileID: 8703149456917459529}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1174634555204332632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8241958487208824107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b76669a42ba54d96878664adc6f5ed6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8321193384947257966
 GameObject:
   m_ObjectHideFlags: 0
