@@ -151,6 +151,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 12b385a159996f84994975f977bce054, type: 2}
+    - target: {fileID: 1259407657456700389, guid: 423815a9aec87fb48bbb6f0f35a66653, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1347294961066747021, guid: 423815a9aec87fb48bbb6f0f35a66653, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -608,7 +612,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3971164360077631483, guid: 761b85bf77377c84c99d1f58d31e9bdb, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3971164360376491367, guid: 761b85bf77377c84c99d1f58d31e9bdb, type: 3}
       propertyPath: m_textAlignment
@@ -624,15 +628,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3971164360923317342, guid: 761b85bf77377c84c99d1f58d31e9bdb, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3971164360923317342, guid: 761b85bf77377c84c99d1f58d31e9bdb, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3971164360923317342, guid: 761b85bf77377c84c99d1f58d31e9bdb, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3971164361534517397, guid: 761b85bf77377c84c99d1f58d31e9bdb, type: 3}
       propertyPath: m_textAlignment
@@ -673,6 +677,10 @@ PrefabInstance:
     - target: {fileID: 7966680084054841179, guid: 761b85bf77377c84c99d1f58d31e9bdb, type: 3}
       propertyPath: m_Name
       value: UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7966680084054841179, guid: 761b85bf77377c84c99d1f58d31e9bdb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8585670015445943077, guid: 761b85bf77377c84c99d1f58d31e9bdb, type: 3}
       propertyPath: m_textAlignment

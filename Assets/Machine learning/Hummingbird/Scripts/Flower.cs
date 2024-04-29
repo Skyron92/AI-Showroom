@@ -60,7 +60,7 @@ namespace MachineLearning
                 NectarAmount = 0;
                 _flowerCollider.gameObject.SetActive(false);
                 nectarCollider.gameObject.SetActive(false);
-                _flowerMaterial.SetColor("_BaseColor", emptyFlowerColor);
+                _flowerMaterial.SetColor("_Color", emptyFlowerColor);
             }
 
             return nectarTaken;
@@ -71,7 +71,7 @@ namespace MachineLearning
             NectarAmount = 1f;
             _flowerCollider.gameObject.SetActive(true);
             nectarCollider.gameObject.SetActive(true);
-            _flowerMaterial.SetColor("_BaseColor", fullFlowerColor);
+            _flowerMaterial.SetColor("_Color", fullFlowerColor);
         }
 
         private void Awake()

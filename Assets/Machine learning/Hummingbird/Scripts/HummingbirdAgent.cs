@@ -1,4 +1,5 @@
-﻿using Unity.Mathematics;
+﻿using System;
+using Unity.Mathematics;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -131,6 +132,45 @@ namespace MachineLearning
             // 10 total observations
         }
 
+        public override void Heuristic(in ActionBuffers actionsOut)
+        {
+            Vector3 forward = Vector3.zero;
+            Vector3 left = Vector3.zero;
+            Vector3 up = Vector3.zero;
+            float pitch = 0f;
+            float yaw = 0f;
+            
+            if (Input.GetKey(KeyCode.Z)) forward = transform.forward;
+            if (Input.GetKey(KeyCode.S)) forward = -transform.forward;
+            if (Input.GetKey(KeyCode.Q)) left =-transform.right;
+            if (Input.GetKey(KeyCode.D)) left = transform.right;
+            if (Input.GetKey(KeyCode.E)) up = transform.up;
+            if (Input.GetKey(KeyCode.C)) up = -transform.up;
+            if (Input.GetKey(KeyCode.UpArrow)) pitch = 1;
+            if (Input.GetKey(KeyCode.DownArrow)) pitch = -1;
+            if (Input.GetKey(KeyCode.LeftArrow)) yaw = -1;
+            if (Input.GetKey(KeyCode.RightArrow)) yaw = 1;
+
+            Vector3 combined = (forward + left + up).normalized;
+            actionsOut.ContinuousActions.Array[0] = combined.x;
+            actionsOut.ContinuousActions.Array[1] = combined.y;
+            actionsOut.ContinuousActions.Array[2] = combined.z;
+            actionsOut.ContinuousActions.Array[3] = pitch;
+            actionsOut.ContinuousActions.Array[4] = yaw;
+        }
+
+        public void FreezeAgent() { 
+            Debug.Assert(!trainingMode,"Freeze / Unfreeze not supported in training");
+            _frozen = true;
+            _rigidbody.Sleep();
+        }
+
+        public void UnfreezeAgent() {
+            Debug.Assert(!trainingMode, "Freeze / Unfreeze not supported in training");
+            _frozen = false;
+            _rigidbody.WakeUp();
+        }
+
         private void MoveToSafeRandomPosition(bool inFrontOfFlower)
         {
             bool safePositionFound = false;
@@ -186,6 +226,43 @@ namespace MachineLearning
                 }
             }
         }
-        
+
+        private void OnTriggerEnter(Collider other) {
+            TriggerEnterOrStay(other);
+        }
+
+        private void OnTriggerStay(Collider other) {
+            TriggerEnterOrStay(other);
+        }
+
+        private void TriggerEnterOrStay(Collider other) {
+            if (other.CompareTag("Nectar")) {
+                Vector3 closestPointToBeakTip = other.ClosestPoint(beakTip.position);
+                if (Vector3.Distance(beakTip.position, closestPointToBeakTip) < BeakTipRadius) {
+                    Flower flower = _flowerArea.GetFlowerFromNectar(other);
+                    float nectarReceived = flower.Feed(.01f);
+                    NectarObtained += nectarReceived;
+
+                    if (trainingMode) {
+                        float bonus = 0.2f * Mathf.Clamp01(Vector3.Dot(transform.forward.normalized,-_nearestFlower.FlowerUpVector.normalized));
+                        AddReward(0.01f + bonus);
+                    }
+                    
+                    if(!flower.HasNectar) UpdateNearestFlower();
+                }
+            }
+        }
+
+        private void OnCollisionEnter(Collision other) {
+            if (trainingMode && other.collider.CompareTag("Boundary")) AddReward(-0.5f);
+        }
+
+        private void Update() {
+            if(_nearestFlower != null) Debug.DrawLine(beakTip.position, _nearestFlower.FlowerCenterPosition, Color.green);
+        }
+
+        private void FixedUpdate() {
+            if(_nearestFlower != null && !_nearestFlower.HasNectar) UpdateNearestFlower();
+        }
     }
 }
