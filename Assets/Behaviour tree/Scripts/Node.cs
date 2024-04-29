@@ -11,6 +11,11 @@ namespace Behaviour_tree.Scripts {
         public Node(){}
         public Node(string pName) => vName = pName;
 
+        public virtual Status Process()
+        {
+            return children[CurrentChild].Process();
+        }
+
         public void AddChild(Node child) {
             children.Add(child);
         }

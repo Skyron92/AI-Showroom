@@ -13,6 +13,12 @@ namespace Behaviour_tree.Scripts
             public Node node;
         }
 
+        public override Status Process()
+        {
+            Debug.Log(children[CurrentChild]);
+            return children[CurrentChild].Process();
+        }
+
         public void DebugTree() {
             string treePrintOut = "";
             Stack<NodeLevel> nodeStack = new Stack<NodeLevel>();
