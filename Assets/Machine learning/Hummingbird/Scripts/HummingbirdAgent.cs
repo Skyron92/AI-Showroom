@@ -1,5 +1,7 @@
 ﻿using Unity.Mathematics;
 using Unity.MLAgents;
+using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Sensors;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -66,6 +68,68 @@ namespace MachineLearning
             MoveToSafeRandomPosition(inFrontOfFlower);
             UpdateNearestFlower();
         }
+        
+        /// <summary>
+        /// Called when an action is received from either the player input or the neural network
+        /// 
+        /// actions.continuousActions[i] represents :
+        /// Index 0 : move vector x (+1 = right, -1 = left)
+        /// Index 1 : move vector y (+1 = up, -1 = down)
+        /// Index 2 : move vector z (+1 = forward, -1 = backward)
+        /// Index 3 : pitch angle (+1 = pitch up, -1 = pitch down)
+        /// Index 3 : yaw angle (+1 = turn right, -1 = turn left)
+        /// </summary>
+        /// <param name="actions">The action to take</param>
+        public override void OnActionReceived(ActionBuffers actions) {
+            if(_frozen) return;
+            float[] vectorActions = actions.ContinuousActions.Array; 
+            
+            // Calculate movement vector
+            Vector3 move = new Vector3(vectorActions[0], vectorActions[1], vectorActions[2]);
+            _rigidbody.AddForce(move * moveForce);
+
+            Vector3 rotationVector = transform.rotation.eulerAngles;
+            // Calculate pitch and yaw rotation
+            float pitchChange = vectorActions[3];
+            float yawChange = vectorActions[4];
+            // Calculate smooth rotation changes
+            _smoothPitchChange = Mathf.MoveTowards(_smoothPitchChange, pitchChange, 2f * Time.fixedDeltaTime);
+            _smoothYawChange = Mathf.MoveTowards(_smoothYawChange, yawChange, 2f * Time.fixedDeltaTime);
+
+            float pitch = rotationVector.x + _smoothPitchChange * Time.fixedDeltaTime * pitchSpeed;
+            if (pitch > 180f) pitch -= 360f;
+            pitch = Mathf.Clamp(pitch, -MaxPitchAngle, MaxPitchAngle);
+
+            float yaw = rotationVector.y + _smoothYawChange * Time.fixedDeltaTime * yawSpeed;
+            
+            transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
+        }
+
+        public override void CollectObservations(VectorSensor sensor) {
+
+            if (_nearestFlower == null) {
+                sensor.AddObservation(new float[10]);
+                return;
+            }
+            
+            // Observe the agent's local rotation (4 observations)
+            sensor.AddObservation(transform.localRotation.normalized);
+            
+            // Get a vector from the beak tip to the nearest flower (1 observation)
+            Vector3 toFlower = _nearestFlower.FlowerCenterPosition - beakTip.position;
+            sensor.AddObservation(toFlower.normalized);
+            
+            // (1 observation)
+            sensor.AddObservation(Vector3.Dot(toFlower.normalized, - _nearestFlower.FlowerUpVector.normalized));
+            
+            // (1 observation)
+            sensor.AddObservation(Vector3.Dot(beakTip.forward.normalized, -_nearestFlower.FlowerUpVector.normalized));
+            
+            // Relative distance between the beak tip and the nearest flower (1 observation)
+            sensor.AddObservation(toFlower.magnitude / FlowerArea.AreaDiameter);
+            
+            // 10 total observations
+        }
 
         private void MoveToSafeRandomPosition(bool inFrontOfFlower)
         {
@@ -122,5 +186,6 @@ namespace MachineLearning
                 }
             }
         }
+        
     }
 }
